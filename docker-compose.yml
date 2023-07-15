@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  main:
+    build: .
+    volumes:
+      - /mnt/wslg:/mnt/wslg
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - $HOME/.ssh:/root/.ssh
+      - data:/root/data
+    environment:
+      - USERNAME=$USERNAME
+      - PW=$PW
+      # belows are needed for wslg
+      - DISPLAY=$DISPLAY
+      - PULSE_SERVER=$PULSE_SERVER
+      - WAYLAND_DISPLAY=$WAYLAND_DISPLAY
+      - XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR
+      
+    tty: true
+
+
+volumes:
+  data:
