@@ -1,16 +1,51 @@
-Helix
-===
+# helix custom
+helix custom
+this firmware is folked from helix
 
-![Helix](https://i.imgur.com/XBAmynN.jpg)
 
-A compact split ortholinear keyboard.
+## Usage
+### Build
+1. **modify keymap.c**
+2. **bulid(with docker)**  
+    it's need to install docker.  
 
-Keyboard Maintainer: [Makoto Kurauchi](https://github.com/MakotoKurauchi/) [@pluis9](https://twitter.com/pluis9) [yushakobo](https://github.com/yushakobo)
-Hardware Supported: Helix PCB Alpha, Beta, Rev3, Pro Micro  
-Hardware Availability: [PCB & Case Data](https://github.com/MakotoKurauchi/helix), [Yushakobo Shop](https://yushakobo.jp/shop/), [Little Keyboards](https://littlekeyboards.com/collections/helix)
+    run command `util/docker_build.sh {PATH_TO_KEYBOARD_FOLDER}:{KEYMAP_FOLDER_NAME}`  
+    for example `util/docker_build.sh helix_custom/rev3_5rows:via`  
+    
+    if sccuceed, '* The firmware size is fine' is displaied in stdout.
+    and compiled file is placed in .build folder.
 
-## How to build
- * [Helix how to Customize and Compile](rev2/keymaps/default/readme.md#customize)
- * [HelixPico how to Customize and Compile](pico/keymaps/default/readme.md#customize)
+3. **flash firmware(with Pro Micro Web Updater)**  
+    go to pro micro web updater site `https://sekigon-gonnoc.github.io/promicro-web-updater/index.html`  
+    press select file button to read compiled file at above.
+    
+    below sequence is done each side keyboard.  
+    1. **reset pro micro**  
+    connect GND and REST to enter boot mode.  
+    Alternatively, press reset button if your keyboard has it.  
+    2. **press flash button**  
+    if succeed, last line displayed is '......Verify OK.'
 
-See [build environment setup](https://docs.qmk.fm/#/getting_started_build_tools) then the [make instructions](https://docs.qmk.fm/#/getting_started_make_guide) for more information.
+### Macro setting
+1. **define custom keycode**  
+    define custom keycode at line28 in keymap.c  
+    `enum custom_keycodes {};`
+
+2. **place key code into keymap**  
+    place custom keycode into keymap when define keymap at line40 in keymap.c.  
+    `const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {}`  
+
+3. **define marco at press custom keycode**  
+    define macro function at line140 in keymap.c  
+    `bool process_record_user(uint16_t keycode, keyrecord_t *record) {}`
+
+
+## Settings
+### Macro for username, password, email address
+- keycode for username is USER
+- keycode for password is PASS
+
+## TODO
+### Macro
+- macro for email address  
+    there are something conflict when define macro for email address in process_record_user.  
